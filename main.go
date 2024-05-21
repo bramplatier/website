@@ -12,19 +12,38 @@ type FormData struct {
 }
 
 func main() {
+	http.HandleFunc("/", mainForm)
+	http.HandleFunc("/parken", parkenForm)
+	http.HandleFunc("/contact", contactForm)
 	http.HandleFunc("/login", serveForm)
 	http.HandleFunc("/submit", submitForm)
 	http.HandleFunc("/register", serveRegisterForm)
-	http.Handle("/styles/", http.StripPrefix("/styles/", http.FileServer(http.Dir("styles"))))
+	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
+	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("js"))))
+	http.Handle("/plugins/", http.StripPrefix("/plugins/", http.FileServer(http.Dir("plugins"))))
+	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
+	http.Handle("/styles/", http.StripPrefix("/styles/", http.FileServer(http.Dir("reservation/styles"))))
 	http.ListenAndServe(":8080", nil)
 }
 
+func mainForm(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "index.html")
+}
+
+func parkenForm(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "parken.html")
+}
+
+func contactForm(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "contact.html")
+}
+
 func serveForm(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "login.html")
+	http.ServeFile(w, r, "reservation/login.html")
 }
 
 func serveRegisterForm(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "register.html")
+	http.ServeFile(w, r, "reservation/register.html")
 }
 
 func submitForm(w http.ResponseWriter, r *http.Request) {
