@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 )
 
@@ -12,6 +14,7 @@ type FormData struct {
 }
 
 func main() {
+	fmt.Println("Starting server...")
 	http.HandleFunc("/", mainForm)
 	http.HandleFunc("/parken", parkenForm)
 	http.HandleFunc("/contact", contactForm)
@@ -24,25 +27,33 @@ func main() {
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	http.Handle("/styles/", http.StripPrefix("/styles/", http.FileServer(http.Dir("reservation/styles"))))
 	http.ListenAndServe(":8080", nil)
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatalf("Server failed: %v", err)
+	}
 }
 
 func mainForm(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Received request for main page")
 	http.ServeFile(w, r, "index.html")
 }
 
 func parkenForm(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Received request for parken page")
 	http.ServeFile(w, r, "parken.html")
 }
 
 func contactForm(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Received request for contact page")
 	http.ServeFile(w, r, "contact.html")
 }
 
 func serveForm(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Received request for serve page")
 	http.ServeFile(w, r, "reservation/login.html")
 }
 
 func serveRegisterForm(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Received request for regestratie page")
 	http.ServeFile(w, r, "reservation/register.html")
 }
 
