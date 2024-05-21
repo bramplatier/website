@@ -9,8 +9,18 @@ import (
 
 // Define a struct to hold the data you want to send to the HTML template
 type FormData struct {
-	Name  string
-	Email string
+	FirstName    string
+	LastName     string
+	Email        string
+	LicensePlate string
+}
+
+type Accommodation struct {
+	Name     string
+	Des      string
+	Price    string
+	ImageURL string
+	Location string
 }
 
 func main() {
@@ -19,7 +29,8 @@ func main() {
 	http.HandleFunc("/parken", parkenForm)
 	http.HandleFunc("/contact", contactForm)
 	http.HandleFunc("/login", serveForm)
-	http.HandleFunc("/submit", submitForm)
+	http.HandleFunc("/login-submit", submitForm)
+	http.HandleFunc("/register-submit", submitForm)
 	http.HandleFunc("/register", serveRegisterForm)
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("js"))))
@@ -44,7 +55,29 @@ func parkenForm(w http.ResponseWriter, r *http.Request) {
 
 func contactForm(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Received request for contact page")
-	http.ServeFile(w, r, "contact.html")
+	accommodations := []Accommodation{
+		{Name: "Chalet", Des: "hoe hoe", Price: "€100 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Belgie"},
+		{Name: "Villa", Des: "hahaha", Price: "€200 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Duitsland"},
+		{Name: "Appartement", Des: "hihihihi", Price: "€150 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Nederland"},
+		{Name: "Strandhuis", Des: "Aan het strand", Price: "€250 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Duitsland"},
+		{Name: "Berghut", Des: "In de bergen", Price: "€180 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Nederland"},
+		{Name: "Chalet", Des: "hoe hoe", Price: "€100 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Belgie"},
+		{Name: "Villa", Des: "hahaha", Price: "€200 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Duitsland"},
+		{Name: "Appartement", Des: "hihihihi", Price: "€150 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Nederland"},
+		{Name: "Strandhuis", Des: "Aan het strand", Price: "€250 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Duitsland"},
+		{Name: "Berghut", Des: "In de bergen", Price: "€180 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Nederland"},
+		{Name: "Chalet", Des: "hoe hoe", Price: "€100 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Belgie"},
+		{Name: "Villa", Des: "hahaha", Price: "€200 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Duitsland"},
+		{Name: "Appartement", Des: "hihihihi", Price: "€150 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Nederland"},
+		{Name: "Strandhuis", Des: "Aan het strand", Price: "€250 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Duitsland"},
+		{Name: "Berghut", Des: "In de bergen", Price: "€180 per nacht", ImageURL: "images/vakantiehuisje.png", Location: "Nederland"},
+	}
+	tmpl := template.Must(template.ParseFiles("contact.html"))
+	err := tmpl.Execute(w, accommodations)
+	if err != nil {
+		http.Error(w, "Error rendering template", http.StatusInternalServerError)
+		return
+	}
 }
 
 func serveForm(w http.ResponseWriter, r *http.Request) {
@@ -69,12 +102,19 @@ func submitForm(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	name := r.Form.Get("name")
+	firstName := r.Form.Get("firstname")
+	lastName := r.Form.Get("lastname")
 	email := r.Form.Get("email")
+	licensePlate := r.Form.Get("license_plate")
 
-	formData := FormData{Name: name, Email: email}
+	formData := FormData{
+		FirstName:    firstName,
+		LastName:     lastName,
+		Email:        email,
+		LicensePlate: licensePlate,
+	}
 
-	tmpl := template.Must(template.ParseFiles("submit.html"))
+	tmpl := template.Must(template.ParseFiles("reservation/submit.html"))
 	err = tmpl.Execute(w, formData)
 	if err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)

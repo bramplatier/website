@@ -68,7 +68,7 @@
 				</li>
   
 				<li class="nav-item @@contact">
-				  <a class="nav-link" href="contact">Contact</a>
+				  <a class="nav-link" href="contact">accommodation</a>
 				</li>
 
 				<li class="nav-item @@over-ons">
@@ -97,31 +97,30 @@
 <!-- contact form start -->
 <section class="contact-form">
   <div class="container">
-    <form class="row" id="contact-form">
-      <div class="col-md-6 col-sm-12">
-        <div class="block">
-          <div class="form-group">
-            <input name="user_name" type="text" class="form-control" placeholder="Naam">
-          </div>
-          <div class="form-group">
-            <input name="user_email" type="text" class="form-control" placeholder="Email Address">
-          </div>
-          <div class="form-group">
-            <input name="user_subject" type="text" class="form-control" placeholder="Onderwerp">
-          </div>
+      <div class="row">
+        <div class="col-md-12">
+            <label for="location-filter">Filter op locatie:</label>
+            <select id="location-filter">
+                <option value="all">Alle locaties</option>
+                <option value="Nederland">Nederland</option>
+                <option value="Belgie">Belgie</option>
+                <option value="Duitsland">Duitsland</option>
+            </select>
         </div>
-      </div>
-      <div class="col-md-6 col-sm-12">
-        <div class="block">
-          <div class="form-group-2">
-            <textarea name="user_message" class="form-control" rows="4" placeholder="Your Message"></textarea>
-          </div>
-          <button class="btn btn-default" type="submit">Verstuur bericht</button>
+    </div>
+    <div class="row" id="accommodations-container">
+        {{range .}}
+        <div class="col-md-4 accommodation-item" data-location="{{.Location}}">
+            <div class="accommodation">
+                <h3>{{.Name}}</h3>
+                <p>{{.Des}}</p>
+                <p>{{.Price}}</p>
+                <p>{{.Location}}</p>
+                <img src="{{.ImageURL}}" alt="{{.Name}}" class="accommodation-image">
+            </div>
         </div>
-      </div>
-      <div class="error" id="error">Bericht neit verzonden</div>
-      <div class="success" id="success">Bericht verzonden</div>
-    </form>
+        {{end}}
+    </div>
     <div class="contact-box row">
       <div class="col-md-6 col-sm-12">
         <div class="block">

@@ -138,5 +138,16 @@ $(document).ready(function () {
 	$(window).on('scroll', function () {
 		counter();
 	});
-
+	document.getElementById('location-filter').addEventListener('change', function() {
+		var selectedLocation = this.value;
+		var accommodations = document.querySelectorAll('.accommodation-item');
+	
+		accommodations.forEach(function(accommodation) {
+			if (selectedLocation === 'all' || accommodation.getAttribute('data-location') === selectedLocation) {
+				accommodation.style.display = 'block';
+			} else {
+				accommodation.style.display = 'none';
+			}
+		});
+	});
 });

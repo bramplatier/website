@@ -2656,3 +2656,17 @@ ul.dropdown-menu li {
   background-color: #333;
 }
 /*# sourceMappingURL=style.css.map */
+.accommodation {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin: 15px 0;
+  text-align: center;
+  overflow: hidden; /* Voorkom dat inhoud buiten het vak komt */
+}
+
+.accommodation-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto; /* Centraal in het vak */
+}
